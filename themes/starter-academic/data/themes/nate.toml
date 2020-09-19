@@ -1,0 +1,21 @@
+# Theme metadata
+name = "nate"
+
+# Is theme light or dark?
+light = true
+
+# Primary
+primary = "#EF525B"
+
+# Menu
+menu_primary = "#003594" #34a4eb
+menu_text = "#EAE7D6"
+menu_text_active = "#EAE7D6"
+menu_title = "#EAE7D6"
+
+# Backgrounds
+background = "#EAE7D6"
+home_section_odd = "#EAE7D6"
+home_section_even = "#EAE7D6"
+
+font = "rose"

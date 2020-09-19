@@ -1,0 +1,26 @@
+# Navigation Links
+#   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the
+#     desired widget in your `content/home/` folder.
+#   The weight parameter defines the order that the links will appear in.
+
+###NATE NOTES: this strictly controls to top row menu. will delete pages from that, but not their content from main page
+
+[[main]]
+  name = "Posts"
+  url = "#posts"
+  weight = 20
+
+#[[main]]
+  #name = "Projects"
+  #url = "#projects"
+ # weight = 30
+
+[[main]]
+  name = "About"
+  url = "#about"
+  weight = 60
+
+#[[main]]
+  #name = "Contact"
+  #url = "#contact"
+  #weight = 60
