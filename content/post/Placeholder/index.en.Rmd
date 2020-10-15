@@ -1,7 +1,7 @@
 ---
 title: Placeholder
 author: Nate Bean
-date: '2020-09-19'
+date: '2020-10-14'
 slug: placeholder
 categories:
   - R
@@ -10,12 +10,12 @@ tags:
   - Rams
   - Goff
 subtitle: ''
-summary: "An analysis of Jared's Goff's 2020 games and what they mean for his career progression."
+summary: "An analysis of Jared's Goff's 2020 games and the Rams turn toward short passing"
 authors: [Nate Bean]
 lastmod: '2020-09-19T12:46:34-05:00'
 featured: no
 image:
-  caption: 'The Boy'
+  caption: 'Jared Goff'
   focal_point: ''
   preview_only: no
 projects: []
