@@ -38,7 +38,7 @@ passing_pbp <- map_df(career, function(x) {
          qb_spike=="0")
 
 ngs_data <- map_df(career, function(x){
-  readRDS(here("Data", paste0("ngs_", x, "_passing.rds")))})
+  readRDS(here("content", "post", "Post1_Goff Passing","Data", paste0("ngs_", x, "_passing.rds")))})
 ```
 
 ```{r, include=FALSE}
@@ -222,11 +222,11 @@ result_colors <- c("#9ecae1", "#756bb1", "#c51b8a", "#fec44f")
 
 endzone <- data.frame(x= 160/3/2, 
                       y=115, 
-                      image= sample(here("Images", "rams_endzone.png")))
+                      image= sample(here("content", "post", "Post1_Goff Passing","Images", "rams_endzone.png")))
 
 opp_endzone <- data.frame(x= 160/3/2, 
                       y=5, 
-                      image= sample(here("Images", "opposite_end.png")))
+                      image= sample(here("content", "post", "Post1_Goff Passing","Images", "opposite_end.png")))
 
 yard_markers <- data.frame(
   x = c(rep(0,13)), 
