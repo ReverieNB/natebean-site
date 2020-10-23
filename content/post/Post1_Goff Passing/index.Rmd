@@ -4,7 +4,7 @@ author: "Nate Bean"
 date: 2020-10-23
 categories: ["R", "NFL", "Rams"]
 tags: ["NFL", "Rams", "Goff"]
-summary: "An analysis of Jared's Goff's 2020 success with short passing"
+summary: "An analysis of Jared's Goff's 2020 success with short passing through Week 5"
 authors: [Nate Bean]
 output: 
   html_document:
@@ -37,7 +37,8 @@ passing_pbp <- map_df(career, function(x) {
     paste0("https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_", x, ".rds")
   )) %>%
     mutate(year= x)}) %>%
-  filter(play_type=="pass",
+  filter(week <= 5,
+        play_type=="pass",
          qb_kneel=="0",
          qb_spike=="0")
 
@@ -288,7 +289,7 @@ There are many additional data points that could shed some light on how Goff's s
 rb_passes <- goff_passing %>%
   filter(receiver_jersey_number >= 20 & receiver_jersey_number <50)
 
-rb_summary <- rb_passes %>%
+rb_passes %>%
   rename(Player=receiver_player_name) %>%
   mutate(Player= ifelse(year < 2020 & Player != "T.Gurley", "Others",Player),
          weeks= ifelse(year==2020, 5, 16)) %>%
