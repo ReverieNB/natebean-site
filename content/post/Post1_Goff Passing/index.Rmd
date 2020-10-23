@@ -14,7 +14,8 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, tidy = "styler" )
 ```
 
 This is my first post on this site, which I created to practice R and learn about some of my favorite topics.

@@ -11,12 +11,12 @@
 [[main]]
   name = "Posts"
   url = "#posts"
-  weight = 20
+  weight = 10
   
   [[main]]
   name = "About"
   url = "#about"
-  weight = 60
+  weight = 100
 
 #[[main]]
  # name = "Projects"
