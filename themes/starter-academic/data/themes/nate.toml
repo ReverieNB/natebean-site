@@ -9,13 +9,13 @@ primary = "#EF525B"
 
 # Menu
 menu_primary = "#003594" #34a4eb
-menu_text = "#EAE7D6"
-menu_text_active = "#EAE7D6"
-menu_title = "#EAE7D6"
+menu_text = "#34a4eb"
+menu_text_active = "#34a4eb"
+menu_title = "#34a4eb"
 
 # Backgrounds
-background = "#EAE7D6"
-home_section_odd = "#EAE7D6"
-home_section_even = "#EAE7D6"
+background = "#fff" #EAE7D6"
+home_section_odd = "#fff"
+home_section_even = "#fff"
 
 font = "rose"
