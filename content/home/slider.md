@@ -30,7 +30,7 @@ height = ""
   #   Activate the button by specifying a URL and button label below.
   #   Deactivate by commenting out parameters, prefixing lines with `#`.
   cta_label = "Read Now"
-  cta_url = "http://127.0.0.1:4321/post/placeholder/"
+  cta_url = "https://natebean.rbind.io/post/goff-short-passing/"
   cta_icon_pack = ""
   cta_icon = ""
 
