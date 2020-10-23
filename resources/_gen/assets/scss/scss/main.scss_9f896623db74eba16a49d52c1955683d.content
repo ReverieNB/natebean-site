@@ -3233,12 +3233,12 @@ input.btn-block[type="button"] {
     display: none; }
 
 .navbar-light .navbar-brand {
-  color: #EAE7D6; }
+  color: #34a4eb; }
   .navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {
-    color: #EAE7D6; }
+    color: #34a4eb; }
 
 .navbar-light .navbar-nav .nav-link {
-  color: #EAE7D6; }
+  color: #34a4eb; }
   .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
     color: rgba(0, 0, 0, 0.7); }
   .navbar-light .navbar-nav .nav-link.disabled {
@@ -3248,21 +3248,21 @@ input.btn-block[type="button"] {
 .navbar-light .navbar-nav .active > .nav-link,
 .navbar-light .navbar-nav .nav-link.show,
 .navbar-light .navbar-nav .nav-link.active {
-  color: #EAE7D6; }
+  color: #34a4eb; }
 
 .navbar-light .navbar-toggler {
-  color: #EAE7D6;
+  color: #34a4eb;
   border-color: transparent; }
 
 .navbar-light .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='%23EAE7D6' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); }
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='%2334a4eb' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); }
 
 .navbar-light .navbar-text {
-  color: #EAE7D6; }
+  color: #34a4eb; }
   .navbar-light .navbar-text a {
-    color: #EAE7D6; }
+    color: #34a4eb; }
     .navbar-light .navbar-text a:hover, .navbar-light .navbar-text a:focus {
-      color: #EAE7D6; }
+      color: #34a4eb; }
 
 .navbar-dark .navbar-brand {
   color: #fff; }
@@ -7161,7 +7161,7 @@ body {
   font-size: 1rem;
   line-height: inherit;
   color: inherit;
-  background-color: #EAE7D6;
+  background-color: #fff;
   margin-top: 70px;
   /* Offset body content by navbar height. */
   padding-top: 0;
@@ -7373,7 +7373,7 @@ small,
  *  Modals.
  **************************************************/
 .modal-content {
-  background: #EAE7D6; }
+  background: #fff; }
 
 .modal-title {
   margin: 0;
@@ -7722,18 +7722,18 @@ footer a.back-to-top i {
   .navbar .navbar-nav {
     display: flex; }
     .navbar .navbar-nav .nav-link {
-      color: rgba(234, 231, 214, 0.85); }
+      color: rgba(52, 164, 235, 0.85); }
       .navbar .navbar-nav .nav-link.active, .navbar .navbar-nav .nav-link:hover, .navbar .navbar-nav .nav-link:focus {
-        color: #EAE7D6; }
+        color: #34a4eb; }
       .navbar .navbar-nav .nav-link.active {
         font-weight: bold !important;
-        color: #EAE7D6 !important; }
+        color: #34a4eb !important; }
   .navbar .dropdown-menu {
     font-size: 16.17px; }
   .navbar .dropdown-item.active,
   .navbar .dropdown-item-active {
     font-weight: bold;
-    color: #EAE7D6 !important; }
+    color: #34a4eb !important; }
 
 .dark .navbar {
   background: #282a36;
@@ -7800,7 +7800,7 @@ footer a.back-to-top i {
   max-width: fit-content; }
 
 #navbar-main .main-menu-item ul li .nav-link {
-  color: #EAE7D6; }
+  color: #34a4eb; }
 
 .dark #navbar-main .main-menu-item ul li .nav-link {
   color: white; }
@@ -7852,7 +7852,7 @@ ul.nav-icons li.nav-item a.nav-link {
 
 .dropdown-menu {
   background-color: #003594 !important;
-  color: #EAE7D6 !important;
+  color: #34a4eb !important;
   z-index: 1032; }
 
 .dark .dropdown-menu {
@@ -7861,7 +7861,7 @@ ul.nav-icons li.nav-item a.nav-link {
 
 .dropdown-item {
   background-color: #003594 !important;
-  color: #EAE7D6 !important; }
+  color: #34a4eb !important; }
 
 .dark .dropdown-item {
   background-color: #282a36 !important;
@@ -7978,7 +7978,7 @@ a.summary-link {
 .search-results {
   transform: scale(0);
   -webkit-transform: scale(0);
-  background-color: #EAE7D6;
+  background-color: #fff;
   bottom: 0;
   left: 0;
   right: 0;
@@ -8017,7 +8017,7 @@ a.summary-link {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  background-color: #EAE7D6;
+  background-color: #fff;
   padding-top: 2rem;
   padding-bottom: 1rem; }
 
@@ -8440,7 +8440,7 @@ ul.share li:hover i {
 
 .home-section {
   position: relative;
-  background-color: #EAE7D6;
+  background-color: #fff;
   padding: 110px 0 110px 0;
   animation: intro 0.3s both;
   animation-delay: 0.15s; }
@@ -8500,7 +8500,7 @@ ul.share li:hover i {
   padding-top: 50px; }
 
 .home-section:nth-of-type(even) {
-  background-color: #EAE7D6; }
+  background-color: #fff; }
 
 .dark .home-section {
   background-color: #272935; }

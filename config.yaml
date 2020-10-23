@@ -17,7 +17,8 @@ ignoreFiles:
   - .ipynb_checkpoints$
   - \.Rmd$
   - \.Rmarkdown$
-  - _files$
+  - \\.knit\\.md$
+  - \\.utf8\\.md$
   - _cache$
 permalinks:
   authors: /author/:slug/
