@@ -9,6 +9,8 @@ authors: [Nate Bean]
 output: 
   html_document:
     code_folding: hide
+  urlcolor: blue
+  linkcolor: blue
 ---
 
 ```{r setup, include=FALSE}
