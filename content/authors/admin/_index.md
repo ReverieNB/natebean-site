@@ -19,7 +19,7 @@ superuser: true
 title: Nate Bean
 ---
 
-I'm a transportation finance reseacher at the Humphrey School of Public Affairs and created this site to use data analysis to explore my interests and practice my R skills.
+I'm a transportation finance researcher at the Humphrey School of Public Affairs and created this site to use data analysis to explore my interests and practice my R skills.
 
 I plan to post about the LA Rams and football during the NFL season, but might also post analysis related to other interests like gaming, politics, and fiction.
 
