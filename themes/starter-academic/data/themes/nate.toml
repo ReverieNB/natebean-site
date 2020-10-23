@@ -5,7 +5,7 @@ name = "nate"
 light = true
 
 # Primary
-primary = "#34a4eb" ##EF525B
+primary = "#023fa1" ##EF525B
 
 # Menu
 menu_primary = "#023fa1" #34a4eb #003594
