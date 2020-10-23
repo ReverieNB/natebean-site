@@ -35,7 +35,7 @@ height = ""
   cta_icon = ""
 
 [[item]]
-  title = "Follow Twitter"
+  title = "Follow Me on Twitter"
   content = "For New Posts"
   align = "center"
   
