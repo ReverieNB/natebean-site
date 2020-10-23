@@ -8,10 +8,10 @@ light = true
 primary = "#34a4eb" ##EF525B
 
 # Menu
-menu_primary = "#003594" #34a4eb
-menu_text = "#34a4eb"
-menu_text_active = "#34a4eb"
-menu_title = "#34a4eb"
+menu_primary = "#023fa1" #34a4eb #003594
+menu_text = "#fff" #34a4eb
+menu_text_active = "#fff"
+menu_title = "#fff"
 
 # Backgrounds
 background = "#fff" #EAE7D6"
