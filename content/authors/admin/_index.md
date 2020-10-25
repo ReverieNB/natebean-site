@@ -1,5 +1,5 @@
 ---
-bio:
+bio: null
 email: ""
 organizations:
 - name: University of Minnesota

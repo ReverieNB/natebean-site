@@ -33,21 +33,21 @@
   icon = "linkedin-in"
   enable = true
 
-[[buttons]]
-  id = "whatsapp"
-  url = "whatsapp://send?text={title}%20{url}"
-  title = "WhatsApp"
-  icon_pack = "fab"
-  icon = "whatsapp"
-  enable = false
+#[[buttons]]
+ # id = "whatsapp"
+ # url = "whatsapp://send?text={title}%20{url}"
+ # title = "WhatsApp"
+ # icon_pack = "fab"
+ # icon = "whatsapp"
+ # enable = false
 
-[[buttons]]
-  id = "weibo"
-  url = "https://service.weibo.com/share/share.php?url={url}&title={title}"
-  title = "Weibo"
-  icon_pack = "fab"
-  icon = "weibo"
-  enable = false
+#[[buttons]]
+#  id = "weibo"
+#  url = "https://service.weibo.com/share/share.php?url={url}&title={title}"
+#  title = "Weibo"
+#  icon_pack = "fab"
+#  icon = "weibo"
+#  enable = false
 
 [[buttons]]
   id = "reddit"
