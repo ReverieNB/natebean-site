@@ -98,16 +98,7 @@ passing_pbp %>%
          `TD/Int`= round(TD/Int, digits= 1)) %>%
   select(Year= year, Player= passer_player_name, `Comp %`, `TD/Int`, CPOE, PR, `EPA/Play`= epa) %>%
   arrange(Year) %>%
-  reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, compact=TRUE, columns= list(
-    Player= colDef(cell= function(value){
-      image <- img(src = sprintf("images/%s.jpg", value), height = "24px", alt = value)
-    tagList(
-      div(style = list(display = "inline-block", width = "30px"), image)#,
-      #value
-      )},
-     minWidth= 120)),
-    #style= list(fontSize= 13)
-    )
+  reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, compact=TRUE)
 ```
 
 Goff went 0-7 during his rookie campaign with a floundering Rams team, and his 2016 stats are his worst across-the-board. His stats picked up immediately after the arrival of Sean McVay, yet so far Goff has been best by nearly all of these measures in 2020. While it's still early, the Rams passing game has clearly improved since 2019. The table also shows how Goff ranks in CPOE, passer rating, and EPA/play among NFL quarterbacks with at least 128 passing attempts. He's never ranked highly in CPOE as modeled by NGS, but has fared much better in passer rating and EPA/play. Goff ranks 11th in the former and 5th in the latter in 2020. Goff isn't completing many more passes than expected given factors such as wide receiver separation, pressure, and throw length, but his high rankings in the other measures indicates he's performing better in other facets of the game.

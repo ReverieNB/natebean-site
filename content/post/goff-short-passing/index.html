@@ -96,23 +96,9 @@ passing_pbp %&gt;%
   ) %&gt;%
   select(Year = year, Player = passer_player_name, `Comp %`, `TD/Int`, CPOE, PR, `EPA/Play` = epa) %&gt;%
   arrange(Year) %&gt;%
-  reactable(
-    outlined = TRUE, striped = TRUE, highlight = TRUE, compact = TRUE, columns = list(
-      Player = colDef(
-        cell = function(value) {
-          image &lt;- img(src = sprintf(&quot;images/%s.jpg&quot;, value), height = &quot;24px&quot;, alt = value)
-          tagList(
-            div(style = list(display = &quot;inline-block&quot;, width = &quot;30px&quot;), image) # ,
-            # value
-          )
-        },
-        minWidth = 120
-      )
-    ),
-    # style= list(fontSize= 13)
-  )</code></pre>
+  reactable(outlined = TRUE, striped = TRUE, highlight = TRUE, compact = TRUE)</code></pre>
 <div id="htmlwidget-1" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":[2017,2018,2019,2020],"Player":["J.Goff","J.Goff","J.Goff","J.Goff"],"Comp %":[62.1,64.9,62.9,67.4],"TD/Int":[4,2.7,1.4,2.5],"CPOE":["-3 (22)","0.6 (18)","-3.6 (34)","0.6 (20)"],"PR":["100.5 (6)","101.1 (8)","86.5 (25)","101.4 (11)"],"EPA/Play":["0.19 (4)","0.44 (1)","0.09 (9)","0.29 (5)"]},"columns":[{"accessor":"Year","name":"Year","type":"numeric"},{"accessor":"Player","name":"Player","type":"character","cell":[{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"30px"}},"children":[{"name":"img","attribs":{"src":"images/J.Goff.jpg","height":"24px","alt":"J.Goff"},"children":[]}]}]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"30px"}},"children":[{"name":"img","attribs":{"src":"images/J.Goff.jpg","height":"24px","alt":"J.Goff"},"children":[]}]}]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"30px"}},"children":[{"name":"img","attribs":{"src":"images/J.Goff.jpg","height":"24px","alt":"J.Goff"},"children":[]}]}]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"30px"}},"children":[{"name":"img","attribs":{"src":"images/J.Goff.jpg","height":"24px","alt":"J.Goff"},"children":[]}]}]}],"minWidth":120},{"accessor":"Comp %","name":"Comp %","type":"numeric"},{"accessor":"TD/Int","name":"TD/Int","type":"numeric"},{"accessor":"CPOE","name":"CPOE","type":"character"},{"accessor":"PR","name":"PR","type":"character"},{"accessor":"EPA/Play","name":"EPA/Play","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"outlined":true,"striped":true,"compact":true,"dataKey":"87313df8cacbba280321da9c140e55a3","key":"87313df8cacbba280321da9c140e55a3"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":[2017,2018,2019,2020],"Player":["J.Goff","J.Goff","J.Goff","J.Goff"],"Comp %":[62.1,64.9,62.9,67.4],"TD/Int":[4,2.7,1.4,2.5],"CPOE":["-3 (22)","0.6 (18)","-3.6 (34)","0.6 (20)"],"PR":["100.5 (6)","101.1 (8)","86.5 (25)","101.4 (11)"],"EPA/Play":["0.19 (4)","0.44 (1)","0.09 (9)","0.29 (5)"]},"columns":[{"accessor":"Year","name":"Year","type":"numeric"},{"accessor":"Player","name":"Player","type":"character"},{"accessor":"Comp %","name":"Comp %","type":"numeric"},{"accessor":"TD/Int","name":"TD/Int","type":"numeric"},{"accessor":"CPOE","name":"CPOE","type":"character"},{"accessor":"PR","name":"PR","type":"character"},{"accessor":"EPA/Play","name":"EPA/Play","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"outlined":true,"striped":true,"compact":true,"dataKey":"c832ce952d8a6752725c994f62b88af7","key":"c832ce952d8a6752725c994f62b88af7"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 <p>Goff went 0-7 during his rookie campaign with a floundering Rams team, and his 2016 stats are his worst across-the-board. His stats picked up immediately after the arrival of Sean McVay, yet so far Goff has been best by nearly all of these measures in 2020. While it’s still early, the Rams passing game has clearly improved since 2019. The table also shows how Goff ranks in CPOE, passer rating, and EPA/play among NFL quarterbacks with at least 128 passing attempts. He’s never ranked highly in CPOE as modeled by NGS, but has fared much better in passer rating and EPA/play. Goff ranks 11th in the former and 5th in the latter in 2020. Goff isn’t completing many more passes than expected given factors such as wide receiver separation, pressure, and throw length, but his high rankings in the other measures indicates he’s performing better in other facets of the game.</p>
 <pre class="r"><code># is completion already here somewhere?
 goff_passing &lt;- passing_pbp %&gt;%
