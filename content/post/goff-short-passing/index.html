@@ -4,11 +4,9 @@ author: "Nate Bean"
 date: 2020-10-23
 categories: ["R", "NFL", "Rams"]
 tags: ["NFL", "Rams", "Goff"]
-summary: "An analysis of Jared's Goff's 2020 success with short passing through Week 5"
+summary: "An analysis of Jared's Goff's 2020 success with short passing through Week 5."
 authors: [Nate Bean]
-output: 
-  html_document:
-    code_folding: hide
+output: html_document
 ---
 
 <script src="index_files/core-js/shim.min.js"></script>
@@ -19,9 +17,10 @@ output:
 <script src="index_files/reactable-binding/reactable.js"></script>
 
 
-<p>I created to learn about some of my favorite topics using R and with the beginning of the beginning 2020 NFL season, my initial focus is on sports analytics. In particular, I want to focus on my favorite team, the LA Rams. I’m new to football analytics, so I’m looking forward to learning as I go and hopefully stumbling across some interesting insights along the way.</p>
+<p>I created this site to learn about some of my favorite topics using R and with the beginning of the beginning 2020 NFL season, my initial focus is on sports analytics. In particular, I want to focus on my favorite team, the LA Rams. I’m new to football analytics, so I’m looking forward to learning as I go and hopefully stumbling across some interesting insights along the way.</p>
 <p>The Rams entered the 2020 season with a lot of question marks, but perhaps the biggest was Jared Goff. Quarterback play is essential to modern NFL teams. According to <a href="https://github.com/mrcaseb/nflfastR">nflfastR</a> data, the average passing play through five weeks in 2020 has gained 6.6 yards, while the average run has gained just 4.5, an efficiency advantage of almost 50%. In particular, the Rams just jettisoned former All-Pro running back Todd Gurley, further increasing the load on Goff’s shoulders after signing a <a href="https://www.turfshowtimes.com/2020/7/6/21315351/patrick-mahomes-jared-goff-contract-comparisons-rams-chiefs-salary">then-record</a> $134 million contract extension in 2019. The Rams can’t return to their 2018 success without Goff playing well, so his play is a great place to start.</p>
-<p>Heading into the season, I believed that Goff could be an above-average quarterback in a successful system, but struggles to create opportunities himself when in difficult situations. My opinion hasn’t changed much through the first five weeks of the season. At 4-1, the Rams have played fairly well against mostly weak competition, and Goff himself has been productive in their successful offensive scheme. He’s played well behind a strong offensive line and avoided making major mistakes while getting the ball to his talented receiving core. He definitely looks improved from his 2019 campaign, which saw the Rams miss the playoffs, but what’s different so far this year?</p>
+<p>Through five wee
+Heading into the season, I believed that Goff could be an above-average quarterback in a successful system, but struggles to create opportunities himself when in difficult situations. My opinion hasn’t changed much through the first five weeks of the season. At 4-1, the Rams have played fairly well against mostly weak competition, and Goff himself has been productive in their successful offensive scheme. He’s played well behind a strong offensive line and avoided making major mistakes while getting the ball to his talented receiving core. He definitely looks improved from his 2019 campaign, which saw the Rams miss the playoffs, but what’s different so far this year?</p>
 <p>A good start to understanding how Goff’s play has changed this year is seeing how his high-level stats have varied throughout this career. Before starting the analysis, the first step is to import the data I’ll be using. In this and future posts, I expect the main data source I’ll use will by play-by-play data available through the nflfastR package. This is a fantastic data source, and I doubt I would have decided to make these posts without it. I’ll also supplement with some data from the NFL’s Next Gen Stats (NGS), conveniently scraped and available on Github from <a href="https://github.com/mrcaseb/nfl-data">mrcaseb</a>. To get started with this analysis, I imported all data from both sources for the years Goff has been active in the league.</p>
 <pre class="r"><code>library(tidyverse)
 options(dplyr.summarise.inform = FALSE)
@@ -298,58 +297,10 @@ ggplot() +
   facet_wrap(~year)</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" />
 Again, it should be noted that while the vertical distance is accurate the horizontal distance shown in the figure above is not. The data provides some information on horizontal pass location- left, middle, or right- but I created the variation within those three categories to make the figure more interesting.</p>
-<p>There are many additional data points that could shed some light on how Goff’s short passing game is working in 2020, but the rest of this post will focus on the role of the running backs in the passing game. In previous years, Gurley played a big role in the passing offense, and seemed effective at turning short, safe passes into big gains with YAC. This year, the Rams have been pivoted to a rb by committee system with Cam Akers, Monte Henderson, and Malcolm Brown (side note: the trio has XXX years through five games, more than the Rams in any year with Gurley as the lead back). Based on my viewing experience, these three have been notably absent in the passing game compared to backs in previous seasons, but is this true?</p>
-<pre class="r"><code># add line of scrimmage
-
-rb_passes &lt;- goff_passing %&gt;%
-  filter(receiver_jersey_number &gt;= 20 &amp; receiver_jersey_number &lt; 50)
-
-rb_passes %&gt;%
-  rename(Player = receiver_player_name) %&gt;%
-  mutate(
-    Player = ifelse(year &lt; 2020 &amp; Player != &quot;T.Gurley&quot;, &quot;Others&quot;, Player),
-    weeks = ifelse(year == 2020, 5, 16)
-  ) %&gt;%
-  group_by(year, Player) %&gt;%
-  summarise(
-    Rec = sum(completion),
-    `Yds/Rec` = round(sum(yards_gained) / Rec, digits = 1),
-    `Target %` = round(sum(target_percent) * 100, digits = 1),
-    TDs = sum(touchdown),
-    Success = round(sum(success) / n() * 100, digits = 0)
-  ) %&gt;%
-  arrange(year, desc(Rec)) %&gt;%
-  filter(Player != &quot;C.Akers&quot;) %&gt;%
-  reactable(
-    outlined = TRUE, striped = TRUE, highlight = TRUE,
-    columns = list(
-      Success = colDef(name = &quot;Success Rate&quot;, align = &quot;left&quot;, cell = function(value) {
-        width &lt;- paste0(value, &quot;%&quot;)
-        bar_chart(value, width = width, fill = &quot;#003594&quot;, background = &quot;#e1e1e1&quot;)
-      }),
-      year = colDef(name = &quot;Year&quot;),
-      Player = colDef(
-        cell = function(value) {
-          image &lt;- img(src = sprintf(&quot;images/%s.jpg&quot;, value), height = &quot;24px&quot;, alt = value)
-          tagList(
-            div(style = list(display = &quot;inline-block&quot;, width = &quot;45px&quot;), image), value
-          )
-        },
-        minWidth = 120
-      )
-    )
-  )</code></pre>
-<p><div id="htmlwidget-3" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"year":[2017,2017,2018,2018,2019,2019,2020,2020],"Player":["T.Gurley","Others","T.Gurley","Others","T.Gurley","Others","M.Brown","D.Henderson"],"Rec":[23,4,20,3,14,2,9,7],"Yds/Rec":[10.5,9.8,11.5,6.7,4.9,5,4.9,13.1],"Target %":[4.1,0.6,3.5,0.7,3.1,0.4,2,1.6],"TDs":[3,0,2,0,0,0,0,1],"Success":[41,75,52,60,32,33,29,55]},"columns":[{"accessor":"year","name":"Year","type":"numeric"},{"accessor":"Player","name":"Player","type":"character","cell":[{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"45px"}},"children":[{"name":"img","attribs":{"src":"images/T.Gurley.jpg","height":"24px","alt":"T.Gurley"},"children":[]}]},"T.Gurley"]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"45px"}},"children":[{"name":"img","attribs":{"src":"images/Others.jpg","height":"24px","alt":"Others"},"children":[]}]},"Others"]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"45px"}},"children":[{"name":"img","attribs":{"src":"images/T.Gurley.jpg","height":"24px","alt":"T.Gurley"},"children":[]}]},"T.Gurley"]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"45px"}},"children":[{"name":"img","attribs":{"src":"images/Others.jpg","height":"24px","alt":"Others"},"children":[]}]},"Others"]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"45px"}},"children":[{"name":"img","attribs":{"src":"images/T.Gurley.jpg","height":"24px","alt":"T.Gurley"},"children":[]}]},"T.Gurley"]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"45px"}},"children":[{"name":"img","attribs":{"src":"images/Others.jpg","height":"24px","alt":"Others"},"children":[]}]},"Others"]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"45px"}},"children":[{"name":"img","attribs":{"src":"images/M.Brown.jpg","height":"24px","alt":"M.Brown"},"children":[]}]},"M.Brown"]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"inline-block","width":"45px"}},"children":[{"name":"img","attribs":{"src":"images/D.Henderson.jpg","height":"24px","alt":"D.Henderson"},"children":[]}]},"D.Henderson"]}],"minWidth":120},{"accessor":"Rec","name":"Rec","type":"numeric"},{"accessor":"Yds/Rec","name":"Yds/Rec","type":"numeric"},{"accessor":"Target %","name":"Target %","type":"numeric"},{"accessor":"TDs","name":"TDs","type":"numeric"},{"accessor":"Success","name":"Success Rate","type":"numeric","cell":[{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":["41",{"name":"div","attribs":{"style":{"flexGrow":1,"marginLeft":"8px","background":"#e1e1e1"}},"children":[{"name":"div","attribs":{"style":{"background":"#003594","width":"41%","height":"16px"}},"children":[]}]}]},{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":["75",{"name":"div","attribs":{"style":{"flexGrow":1,"marginLeft":"8px","background":"#e1e1e1"}},"children":[{"name":"div","attribs":{"style":{"background":"#003594","width":"75%","height":"16px"}},"children":[]}]}]},{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":["52",{"name":"div","attribs":{"style":{"flexGrow":1,"marginLeft":"8px","background":"#e1e1e1"}},"children":[{"name":"div","attribs":{"style":{"background":"#003594","width":"52%","height":"16px"}},"children":[]}]}]},{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":["60",{"name":"div","attribs":{"style":{"flexGrow":1,"marginLeft":"8px","background":"#e1e1e1"}},"children":[{"name":"div","attribs":{"style":{"background":"#003594","width":"60%","height":"16px"}},"children":[]}]}]},{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":["32",{"name":"div","attribs":{"style":{"flexGrow":1,"marginLeft":"8px","background":"#e1e1e1"}},"children":[{"name":"div","attribs":{"style":{"background":"#003594","width":"32%","height":"16px"}},"children":[]}]}]},{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":["33",{"name":"div","attribs":{"style":{"flexGrow":1,"marginLeft":"8px","background":"#e1e1e1"}},"children":[{"name":"div","attribs":{"style":{"background":"#003594","width":"33%","height":"16px"}},"children":[]}]}]},{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":["29",{"name":"div","attribs":{"style":{"flexGrow":1,"marginLeft":"8px","background":"#e1e1e1"}},"children":[{"name":"div","attribs":{"style":{"background":"#003594","width":"29%","height":"16px"}},"children":[]}]}]},{"name":"div","attribs":{"style":{"display":"flex","alignItems":"center"}},"children":["55",{"name":"div","attribs":{"style":{"flexGrow":1,"marginLeft":"8px","background":"#e1e1e1"}},"children":[{"name":"div","attribs":{"style":{"background":"#003594","width":"55%","height":"16px"}},"children":[]}]}]}],"align":"left"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"outlined":true,"striped":true,"dataKey":"492cab21e34b3370a17c764ce3517bcc","key":"492cab21e34b3370a17c764ce3517bcc"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
-The table above shows some of the key stats for relievers out of the backfield during the McVay era. Until his departure, Gurley commanded the lion’s share of attention from Goff. Post-Gurley, catches out of the backfield have been split between Henderson and Brown, with Cam Akers being sidelined for most of the season with dislocated rib cartilage (he did have one catch, but is dropped in the table).</p>
-<p>Of course the Rams running backs have fewer receptions through five games than Gurley did throughout the entirety of previous seasons, but the table also shows that running backs are getting a lower target share from Goff than Gurley during the years he was healthy, when he averaged between 4 and 5 percent of targets. Another key stat here is success rate, defined as the percentage of receptions that result in positive expected points added (EPA). In this case, EPA also takes incompletions to each target into account. The overall production of the 2020 running backs is still too low to meaningfully compare their success with previous years, although a notable finding is that Gurley doesn’t have a significantly higher success rate than other running backs during previous seasons. He did however have greater average yards per catch, possibly suggesting some big plays are driving that average up.</p>
-<p>The lessened role in the passing game may simply be due to the loss of the talented Gurley. Without a player of this caliber, the offense is designed to work through other options now. However, the loss of Gurley doesn’t appear to be the end of the world, as the success rate for passes to Rams running backs in the pass game has generally been lower than their overall average pf 50.2% since 2017.</p>
-<p>Overall, it will be interesting to see how the Rams passing game evolves throughout the season. Will Goff start throwing more deep balls as opposing defenses adjust to the Rams YAC-heavy pass game? Either way, for now Goff and the Rams offense is off the a great start to 2020. If they can maintain their success as divisional play begins this week against the 49ers, they’ll be in a good position to make another post-season run.</p>
 <p>This post just scratches the surface of the analysis that can be with nflfastR and other data sources and I plan to explore a lot more about the Rams passing game and other NFL topics in the future. This is just an initial exploration into trends in Goff’s 2020 passing game. There’s a ton more we can do with the available data, and plenty of posts to come. Topics I’m interested about looking at in the future include:</p>
 <ul>
 <li>Goff’s effectiveness using play action and with pre-snap motion (data pending)</li>
 <li>The change in wide receiver production with shift to short passing</li>
 <li>The Ram’s opening drive success</li>
-<li>Improvements in the Rams offensive line play</li>
 <li>A more in-depth look at passing patterns taking into account down, field position, time of game, and other factors</li>
 </ul>
