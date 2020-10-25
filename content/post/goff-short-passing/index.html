@@ -1,19 +1,12 @@
 ---
-author: Nate Bean
-authors:
-- Nate Bean
-categories:
-- R
-- NFL
-- Rams
-date: "2020-10-23"
+title: "Jared Goff's Shift Towards Short Passing"
+author: "Nate Bean"
+date: 2020-10-23
+categories: ["R", "NFL", "Rams"]
+tags: ["NFL", "Rams", "Goff"]
+summary: "An analysis of the Rams success with short passing through the first 5 weeks of 2020."
+authors: [Nate Bean]
 output: html_document
-summary: An analysis of the Rams success with short passing through the first 5 weeks of 2020.
-tags:
-- NFL
-- Rams
-- Goff
-title: Jared Goff's Shift Towards Short Passing
 ---
 
 <script src="index_files/core-js/shim.min.js"></script>
@@ -233,10 +226,7 @@ passing_pbp %&gt;%
     ),
     .keep = &quot;unused&quot;
   )</code></pre>
-<pre class="r"><code>library(ggforce)
-library(here)
-
-result_colors &lt;- c(&quot;#9ecae1&quot;, &quot;#756bb1&quot;, &quot;#c51b8a&quot;, &quot;#fec44f&quot;)
+<pre class="r"><code>result_colors &lt;- c(&quot;#9ecae1&quot;, &quot;#756bb1&quot;, &quot;#c51b8a&quot;, &quot;#fec44f&quot;)
 
 endzone &lt;- data.frame(
   x = 160 / 3 / 2,
@@ -276,6 +266,7 @@ ggplot() +
   geom_segment(data = sidelines[1, 1:4], mapping = aes(x = x, y = y, xend = xend, yend = yend), color = &quot;white&quot;) +
   geom_segment(data = sidelines[2, 1:4], mapping = aes(x = x, y = y, xend = xend, yend = yend), color = &quot;white&quot;) +
   geom_segment(data = yard_markers, aes(x = x, y = y, xend = xend, yend = yend), color = &quot;White&quot;) +
+  geom_hline(yintercept = 30, color = &quot;blue&quot;) +
   geom_image(endzone, mapping = aes(x, y, image = image), size = 0.9) +
   geom_image(opp_endzone, mapping = aes(x, y, image = image), size = 0.9) +
   theme_void() +

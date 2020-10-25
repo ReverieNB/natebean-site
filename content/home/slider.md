@@ -17,7 +17,7 @@ height = ""
 # Duplicate an `[[item]]` block to add more slides.
 [[item]]
   title = "Jared Goff's First 5 Games"
-  content = "Reliance on Short Passing"
+  content = "Short Passing Success"
   align = "center"  # Choose `center`, `left`, or `right`.
 
   # Overlay a color or image (optional).

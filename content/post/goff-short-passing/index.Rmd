@@ -217,9 +217,6 @@ passes_2020 <- passing_pbp %>%
 ```
 
 ```{r, warning=FALSE, fig.align="center"}
-library(ggforce)
-library(here)
-
 result_colors <- c("#9ecae1", "#756bb1", "#c51b8a", "#fec44f")
 
 endzone <- data.frame(x= 160/3/2, 
@@ -253,7 +250,8 @@ ggplot() +
   xlim(0, ((160/3))) + 
   geom_segment(data= sidelines[1, 1:4], mapping = aes(x=x, y=y, xend=xend, yend=yend), color="white") +
   geom_segment(data= sidelines[2, 1:4], mapping = aes(x=x, y=y, xend=xend, yend=yend), color="white") +
-  geom_segment(data = yard_markers, aes(x = x, y = y, xend = xend, yend = yend), color="White")+
+  geom_segment(data = yard_markers, aes(x = x, y = y, xend = xend, yend = yend), color="White") +
+  geom_hline(yintercept= 30, color= "blue") +
   geom_image(endzone, mapping= aes(x, y, image=image), size=0.9)+
   geom_image(opp_endzone, mapping= aes(x, y, image=image), size=0.9)+
   theme_void()+
