@@ -103,7 +103,8 @@ passing_pbp %>%
       image <- img(src = sprintf("images/%s.jpg", value), height = "24px", alt = value)
     tagList(
       div(style = list(display = "inline-block", width = "30px"), image),
-      value)})),
+      value)},
+     minWidth= 120)),
     #style= list(fontSize= 13)
     )
 ```
