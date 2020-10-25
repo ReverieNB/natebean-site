@@ -1,10 +1,10 @@
 ---
-title: "Goff Analysis"
+title: "Jared Goff's Shift Towards Short Passing"
 author: "Nate Bean"
 date: 2020-10-23
 categories: ["R", "NFL", "Rams"]
 tags: ["NFL", "Rams", "Goff"]
-summary: "An analysis of Jared's Goff's 2020 success with short passing through Week 5."
+summary: "An analysis of the Rams success with short passing through the first 5 weeks of 2020."
 authors: [Nate Bean]
 output: html_document
 ---
@@ -14,14 +14,13 @@ library(knitr)
 knitr::opts_chunk$set(echo = TRUE, tidy = "styler" )
 ```
 
-I created this site to learn about some of my favorite topics using R and with the beginning of the beginning 2020 NFL season, my initial focus is on sports analytics. In particular, I want to focus on my favorite team, the LA Rams. I'm new to football analytics, so I'm looking forward to learning as I go and hopefully stumbling across some interesting insights along the way.
+I created this site explore some of my favorite topics with R. With the 2020 NFL season underway, my initial focus is on football analytics and my favorite team, the LA Rams. I'm new to sports analytics, so I'm looking forward to learning as I go and hopefully stumbling across some insights along the way.
 
-The Rams entered the 2020 season with a lot of question marks, but perhaps the biggest was Jared Goff. Quarterback play is essential to modern NFL teams. According to [nflfastR](https://github.com/mrcaseb/nflfastR) data, the average passing play through five weeks in 2020 has gained 6.6 yards, while the average run has gained just 4.5, an efficiency advantage of almost 50%. In particular, the Rams just jettisoned former All-Pro running back Todd Gurley, further increasing the load on Goff's shoulders after signing a [then-record](https://www.turfshowtimes.com/2020/7/6/21315351/patrick-mahomes-jared-goff-contract-comparisons-rams-chiefs-salary) $134 million contract extension in 2019. The Rams can't return to their 2018 success without Goff playing well, so his play is a great place to start.   
+The Rams entered the 2020 season with a lot of question marks, but perhaps the biggest was Jared Goff. Quarterback play is essential to modern NFL teams- the average passing play through five weeks in 2020 has gained 6.6 yards, while the average run has gained just 4.5, according to [nflfastR](https://github.com/mrcaseb/nflfastR) data. That's an efficiency advantage of almost 50%. In particular, the Rams just jettisoned All-Pro running back Todd Gurley, further increasing the load on Goff's [\$134 million shoulders](https://www.turfshowtimes.com/2020/7/6/21315351/patrick-mahomes-jared-goff-contract-comparisons-rams-chiefs-salary). The Rams can't return to the successful days of 2018 without Goff playing well, so I decided analyzing his play is a good way to begin.
 
-Through five wee
-Heading into the season, I believed that Goff could be an above-average quarterback in a successful system, but struggles to create opportunities himself when in difficult situations. My opinion hasn't changed much through the first five weeks of the season. At 4-1, the Rams have played fairly well against mostly weak competition, and Goff himself has been productive in their successful offensive scheme. He's played well behind a strong offensive line and avoided making major mistakes while getting the ball to his talented receiving core. He definitely looks improved from his 2019 campaign, which saw the Rams miss the playoffs, but what's different so far this year?
+The Rams have only dropped one game through the first five weeks of the season, albeit against fairly weak competition. Goff has been quite productive as a part of the Rams successful offensive scheme. He's played well behind a much-improved offensive line, gotten the ball out quickly to his talented receiving core, and avoided making major mistakes. Goff hasn't looked like one of the top quarterbacks in the league, but has played well enough bring the Rams back into contention in the NFC. His play has definitely improved since the 2019 season, but what's responsible for the recent success? 
 
-A good start to understanding how Goff's play has changed this year is seeing how his high-level stats have varied throughout this career. Before starting the analysis, the first step is to import the data I'll be using. In this and future posts, I expect the main data source I'll use will by play-by-play data available through the nflfastR package. This is a fantastic data source, and I doubt I would have decided to make these posts without it. I'll also supplement with some data from the NFL's Next Gen Stats (NGS), conveniently scraped and available on Github from [mrcaseb](https://github.com/mrcaseb/nfl-data). To get started with this analysis, I imported all data from both sources for the years Goff has been active in the league.
+A peek of Goff's high-level stats is a good start to understanding how his play has evolved this year. Before getting into those, it's necessary to import the data I'll be using. The main data source for this post (and future ones) will be play-by-play data available through the nflfastR package. This is a fantastic data source, and I wouldn't be able to do much NFL analytics without it. I'll also supplement it with data from the NFL's Next Gen Stats (NGS), conveniently scraped and available on Github from [mrcaseb](https://github.com/mrcaseb/nfl-data). I imported the data from both sources for the years Goff has been active in the league, below.
 
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
@@ -53,6 +52,8 @@ bar_chart <- function(label, width = "100%", height = "16px", fill = "#00bfc4", 
 }
 ```
 
+The table below shows some of Goff's most important stats since entering the league in 2016, with a focus on efficiency rather than total output. All of the data is originally from NGS, besides average expected points added (EPA) per passing play, which was calculated using nflfastR. Key stats from NGS include Goff's completion percentage, touchdown to interception ratio, completion percentage over expected (CPOE), and passer rating. 
+
 ```{r, warning=FALSE}
 library(reactable)
 library(htmltools)
@@ -68,17 +69,17 @@ ngs_goff <- ngs_data %>%
     TD= pass_touchdowns,
     Int= interceptions,
     CPOE= round(completion_percentage_above_expectation, digits=1),
-    QBR= round(passer_rating, digits=1),
+    PR= round(passer_rating, digits=1),
     .keep= "unused") %>% 
   group_by(season) %>%
-  arrange(desc(QBR)) %>%
-  mutate(qbr_rank= row_number()) %>%
+  arrange(desc(PR)) %>%
+  mutate(pr_rank= row_number()) %>%
   arrange(desc(CPOE)) %>%
   mutate(cpoe_rank= row_number()) %>%
   filter(player_last_name== "Goff") %>%
-  mutate(QBR= paste0(QBR, " ", "(", qbr_rank, ")"),
+  mutate(PR= paste0(PR, " ", "(", pr_rank, ")"),
          CPOE= paste0(CPOE, " ", "(", cpoe_rank, ")")) %>%
-  select(-qbr_rank, -cpoe_rank)
+  select(-pr_rank, -cpoe_rank)
 
 passing_pbp %>%
   filter(season_type=="REG") %>%
@@ -95,7 +96,7 @@ passing_pbp %>%
   inner_join(ngs_goff, by= c("year"="season")) %>%
   mutate(epa= paste0(epa, " ", "(", epa_rank, ")"),
          `TD/Int`= round(TD/Int, digits= 1)) %>%
-  select(Year= year, Player= passer_player_name, `Comp %`, `TD/Int`, CPOE, QBR, `EPA/Play`= epa) %>%
+  select(Year= year, Player= passer_player_name, `Comp %`, `TD/Int`, CPOE, PR, `EPA/Play`= epa) %>%
   arrange(Year) %>%
   reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, columns= list(
     Player= colDef(cell= function(value){
@@ -105,12 +106,9 @@ passing_pbp %>%
       value)})))
 ```
 
-This data allows us to take a look at some of Goff's most important stats since entering the league in 2016. All of the data in the table below is originally from NGS, besides average expected points added (EPA) per passing play, which was calculated using play-by-play data. Key stats from NGS include Goff's completion percentage, touchdown to interception ratio, completion percentage over expected (CPOE), and quarterback rating (QBR). 
-
-2016 was Goff's worst season across all stats shown, not surprising given his 0-7 record as a starter for a floundering Rams team. While his stats picked up immediately with the arrival of Sean McVay, Goff has so far recorded his best stats in nearly all of the these measures in 2020. The table also shows how Goff ranks among NFL quarterbacks with at least 128 attempts in CPOE, QBR, and EPA/play. He's never ranked highly in CPOE according to the NGS model, but has fared much better in QBR and EPA/play. In 2020, he ranks 11th in QBR and 5th in EPA/play. His relatively higher ranking in these two measures gives some insight into the reasons for his success. Goff hasn't performed much above expectations for completed passes, so these stats suggest his success has come from other elements of the scheme, and avoiding turnovers and sacks.
+Goff went 0-7 during his rookie campaign with a floundering Rams team, and his 2016 stats are his worst across-the-board. His stats picked up immediately after the arrival of Sean McVay, yet so far Goff has been best by nearly all of these measures in 2020. While it's still early, the Rams passing game has clearly improved since 2019. The table also shows how Goff ranks in CPOE, passer rating, and EPA/play among NFL quarterbacks with at least 128 passing attempts. He's never ranked highly in CPOE as modeled by NGS, but has fared much better in passer rating and EPA/play. Goff ranks 11th in the former and 5th in the latter in 2020. Goff isn't completing many more passes than expected given factors such as wide receiver separation, pressure, and throw length, but his high rankings in the other measures indicates he's performing better in other facets of the game.
 
 ```{r, warning=FALSE}
-#needs to be resized for the post
 #is completion already here somewhere?
 goff_passing <- passing_pbp %>%
   filter(passer_player_name== "J.Goff",
@@ -121,23 +119,23 @@ goff_passing <- passing_pbp %>%
   select(week, year, down, completion, yards_gained, yards_after_catch, air_yards, pass_length, qb_epa, receiver_player_name, receiver_jersey_number, cp, cpoe, penalty, touchdown, interception, qb_hit, success, target_percent)
 ```
 
-Now that we've taken a look at Goff's overall stats through week five, it's useful to take a deeper dive into the factors that could explain some of his success this year. There's a ton of possibilities to explore, and his success certainly stems from multiple changes, but the biggest difference that I've seen this year has been the Rams reliance on short passing. At least from my viewing experience, Goff has relied much more frequently on short passes and yards after catch (YAC) from his receivers. The lack of [deep balls](https://theathletic.com/2122606/2020/10/08/rams-qb-jared-goff-is-through-his-first-four-games-so-what-have-we-learned/) from Goff has been highlighted by many others as well. Most of the remainder of this post will be dedicated to understanding how Goff has changed his pass selection, and how that compares to other teams. First, it will help to confirm what I already suspect is true by comparing the Rams reliance on short passing to the rest of the league. The code below creates a figure that shows the relationship between YAC and air yards (the distance beyond the line of scrimmage the ball travels in the air) across the league. 
+One aspect of the Ram's passing scheme that I've noticed this year is their reliance on short passing. At least from my observations, they've relied much more on short passes that generate yards after catch (YAC) than in previous years. The lack of [deep balls](https://theathletic.com/2122606/2020/10/08/rams-qb-jared-goff-is-through-his-first-four-games-so-what-have-we-learned/) from Goff has been highlighted by others as well. The rest of this post will be focused on how Goff's pass selection has evolved in 2020. First, it's important to compare the Rams reliance on short passing to the rest of the league. The code below creates a figure that shows the relationship between YAC and air yards (the distance beyond the line of scrimmage the pass travels to the receiver). 
 
 ```{r, warning=FALSE, fig.align= "center", message=FALSE}
 library(ggimage)
 library(teamcolors)
 library(extrafont)
 
-#make sure the avgs are current with incompletions
-
 team_logos <- teams_colors_logos %>% select(team_abbr, team_logo_espn)
 
 passing_pbp %>% 
-  filter(year==2020) %>%
-  select(posteam, air_yards, yards_after_catch, yards_gained, passer_player_name) %>%
-  group_by(posteam) %>%
+  filter(year==2020,
+         is.na(air_yards)==FALSE) %>% #sacks
+  select(desc, posteam, air_yards, yards_after_catch, yards_gained, passer_player_name) %>%
+  #mutate(yards_after_catch= replace_na(yards_after_catch, 0)) %>% #YAC per pass
+   group_by(posteam) %>%
   summarise(
-    air_yards= mean(air_yards, na.rm = TRUE),
+    air_yards= mean(air_yards),
     yards_after_catch= mean(yards_after_catch, na.rm = TRUE)) %>%
   inner_join(team_logos, by= c("posteam"= "team_abbr")) %>%
   ggplot(aes(x=air_yards, y=yards_after_catch)) +
@@ -146,8 +144,8 @@ passing_pbp %>%
   geom_vline(aes(xintercept= mean(air_yards)), color="#003594", linetype= "dashed") +
   theme_bw()+
   labs(
-    x= "Avg. Air Yards",
-    y= "Avg. YAC",
+    x= "AY/Pass",
+    y= "YAC/Comp",
     title = "Distribution of NFL Passing Yards (2020)",
     caption= "Weeks 1-5.  Data: @nflfastR") +
   theme(
@@ -159,8 +157,8 @@ passing_pbp %>%
     legend.text = element_text(size=12))
 ```
 
-The figure above shows that there's a general inverse relationship between a team's average YAC and air yards. It offers a clear takeaway for the Rams: Goff is throwing extremely short passes and the team relies heavily on YAC. 
-The Rams are getting an league high average of 7 YAC per pass (OR PASSING PLAY, FIGURE OUT), half a yard ahead of the next closest team. Meanwhile, they barely average over 6 air yards per pass (OR PASSING PLAY, FIGURE OUT). This is only higher than the Saints, which may be because Drew Brees cannot physically throw the football past the chains on first and 10. The evidence couldn't be clearer: the Rams offense is built around YAC. But how similar was this to past years? The code below shows the breakdown between long and short completions throughout Goff's career.
+It's clear that there's an inverse relationship between a team's average YAC and air yards. The figure also confirms that Goff is relying on short passes so far this season. He averages just above 6 air yards per pass, which is only higher than the Saints, perhaps because Drew Brees cannot physically throw the football 10 yards. However, the Rams are getting an league high average of 7 YAC per completion, over half a yard ahead of the next closest team. The evidence couldn't be stronger that the Rams pass attack is built around YAC, but how similar is this to past seasons?
+The code below shows the breakdown between long and short completions throughout Goff's career.
 
 ```{r, warning=FALSE}
 library(reactable)
@@ -190,9 +188,9 @@ passing_pbp %>%
       value)})))
 ```
 
-Goff's average air yards are shown two ways here: his intended air yards, his air yards from all of his passes, and air yards per completion, the number of his completed air yards. The table also shows the Rams YAC per completion and total yards per completion. Goff's winless 7-game rookie season is an outlier, as all of the averages presented in this table were his lowest. Compared to his average over the previous three season, Goff's completions about a yard shorter through the air, but are gaining about an extra yard after the catch. The biggest change is in his intended air yards though, which have declined 25% compared to average. 
+The table shows two types of air yards: completed air yards and intended air yards, which includes completed air yards and the potential air yards from incomplete passes. It also shows the Rams YAC per completion and total yards per completion. Goff's winless 7-game rookie season is once again an outlier. In 2020, his completions have been about a yard shorter through the air compared to his average over the previous three seasons, but they're gaining about an extra yard after the catch. The biggest change is in his intended air yards, though, which have declined 25% compared to average. 
 
-I also wanted to find if there have been changes to where on the field Goff has been throwing. In addition to pass yardage data, the data scraped through nflfastR also has indicators for whether the pass was thrown to the right, left, or middle. This isn't as strong as data that more accurately positions passes inside those three zones, but could still be interesting. I had a lot of fun messing around with ggplot2 to create a nice facsimile of a football field below my scatter plot. I based my code of the code provided through Big Data Bowl (cite) and found an [image](https://www.google.com/imgres?imgurl=https://ramsnewlook.com/wp-content/uploads/2020/03/LA-ltyp.png&imgrefurl=https://ramsnewlook.com/&tbnid=SY-ryDGAlFhGnM&vet=1&docid=CmxMc3tBJ9cbiM&w=2000&h=438&source=sh/x/im) via Google images to serve as the base for the endzone I created.  
+Finally, I wanted to see if Goff has been throwing to different areas of the field. In addition to pass yardage data, nflfastR also has indicators for whether the pass was thrown to the right, left, or middle of the field. This isn't as strong as data that pinpoints the location of a catch on the field, but is still interesting. Mainly, I had a lot of fun messing around with ggplot2 to create a nice facsimile of a football field for my scatter plot. I used the code from the [Big Data Bowl](https://github.com/nfl-football-ops/Big-Data-Bowl) as a starting point and found an [image](https://www.google.com/imgres?imgurl=https://ramsnewlook.com/wp-content/uploads/2020/03/LA-ltyp.png&imgrefurl=https://ramsnewlook.com/&tbnid=SY-ryDGAlFhGnM&vet=1&docid=CmxMc3tBJ9cbiM&w=2000&h=438&source=sh/x/im) via Google  to serve create my endzone.  
 
 ```{r}
 passes_2020 <- passing_pbp %>%
@@ -276,11 +274,13 @@ ggplot() +
         legend.text = element_text(size=12)) +
   facet_wrap(~year)
 ```
-Again, it should be noted that while the vertical distance is accurate the horizontal distance shown in the figure above is not. The data provides some information on horizontal pass location- left, middle, or right- but I created the variation within those three categories to make the figure more interesting. 
+Again, it should be noted that while the vertical distance is accurate, the lateral distance shown in the figure above is not. Variation within the three quadrants referenced in the previous paragraph is just a result of the `geom_jitter` function. All pass lengths were shown from a line of scrimmage at the 20 yard line (marked with a blue line). The scatter plot shows more passes around and behind the line of scrimmage in 2020 than 2019, and it will be interested to compare the two again at the end of the season. At the moment, the figure was more of a fun than useful exercise.
 
-This post just scratches the surface of the analysis that can be with nflfastR and other data sources and I plan to explore a lot more about the Rams passing game and other NFL topics in the future. This is just an initial exploration into trends in Goff's 2020 passing game. There's a ton more we can do with the available data, and plenty of posts to come. Topics I'm interested about looking at in the future include:
+It will be interesting  to see how the Rams passing game evolves throughout the season. Will Goff start throwing deeper passes as defenses adjust to their YAC-heavy passing game? If not, does he have what it takes to adjust to defensive schemes built to counter it? If the Rams offense can maintain its success as divisional play begins this week against the 49ers, they'll be in a good position to make another post-season run (note from the future: they did not). 
 
-- Goff's effectiveness using play action and with pre-snap motion (data pending)
-- The change in wide receiver production with shift to short passing
+This post just scratches the surface of what can be done with nflfastR and other available NFL data. It was a good initial look at the Rams passing game and a good way to get acquainted with the data. I plan to explore a lot more about the Rams passing game, and other NFL topics, in the future. Topics I'm interested about looking at in the future include:
+
+- Goff's effectiveness using play action and pre-snap motion (data pending)
+- The change in receiver production given the shift to short passing
 - The Ram's opening drive success
 - A more in-depth look at passing patterns taking into account down, field position, time of game, and other factors
