@@ -6,6 +6,7 @@ categories: ["R", "NFL", "Rams"]
 tags: ["NFL", "Rams", "Goff"]
 summary: "An analysis of the Rams success using short passing through the first 5 weeks of 2020."
 authors: [Nate Bean]
+twitterImg: post/goff-short-passing/featured.png
 output: html_document
 ---
 
