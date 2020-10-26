@@ -35,8 +35,7 @@ passing_pbp <- map_df(career, function(x) {
     paste0("https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_", x, ".rds")
   )) %>%
     mutate(year= x)}) %>%
-  filter(week <= 5,
-        play_type=="pass",
+  filter(play_type=="pass",
          qb_kneel=="0",
          qb_spike=="0")
 
@@ -50,6 +49,9 @@ bar_chart <- function(label, width = "100%", height = "16px", fill = "#00bfc4", 
   chart <- div(style = list(flexGrow = 1, marginLeft = "8px", background = background), bar)
   div(style = list(display = "flex", alignItems = "center"), label, chart)
 }
+
+passing_pbp <- passing_pbp %>%
+  filter(!(year==2020 & week >5))
 ```
 
 The table below shows some of Goff's most important stats since entering the league in 2016, with a focus on efficiency rather than total output. All of the data is originally from NGS, besides average expected points added (EPA) per passing play, which was calculated using nflfastR. Key stats from NGS include Goff's completion percentage, touchdown to interception ratio, completion percentage over expected (CPOE), and passer rating. 
@@ -98,10 +100,11 @@ passing_pbp %>%
          `TD/Int`= round(TD/Int, digits= 1)) %>%
   select(Year= year, Player= passer_player_name, `Comp %`, `TD/Int`, CPOE, PR, `EPA/Play`= epa) %>%
   arrange(Year) %>%
-  reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, compact=TRUE)
+  reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, compact=TRUE, theme= reactableTheme(
+    stripedColor= "#eff7fa"))
 ```
 
-Goff went 0-7 during his rookie campaign with a floundering Rams team, and his 2016 stats are his worst across-the-board. His stats picked up immediately after the arrival of Sean McVay, yet so far Goff has been best by nearly all of these measures in 2020. While it's still early, the Rams passing game has clearly improved since 2019. The table also shows how Goff ranks in CPOE, passer rating, and EPA/play among NFL quarterbacks with at least 128 passing attempts. He's never ranked highly in CPOE as modeled by NGS, but has fared much better in passer rating and EPA/play. Goff ranks 11th in the former and 5th in the latter in 2020. Goff isn't completing many more passes than expected given factors such as wide receiver separation, pressure, and throw length, but his high rankings in the other measures indicates he's performing better in other facets of the game.
+Goff went 0-7 during his rookie campaign with a floundering Rams team, and his 2016 stats are his worst across-the-board. He picked up immediately after the arrival of Sean McVay, yet so far Goff has been best by nearly all of these measures in 2020. While it's still early, the Rams passing game has clearly improved since 2019. The table also shows how Goff ranks in CPOE, passer rating, and EPA/play among NFL quarterbacks with at least 128 passing attempts. He's never ranked highly in CPOE as modeled by NGS, but has fared much better in passer rating and EPA/play. Goff ranks 11th in the former and 5th in the latter in 2020. Goff isn't completing many more passes than expected given factors such as wide receiver separation, pressure, and throw length, but his high rankings in the other measures indicates he's performing better in other facets of the game.
 
 ```{r, warning=FALSE}
 #is completion already here somewhere?
@@ -175,12 +178,7 @@ passing_pbp %>%
     `AY/C`= round(mean(air_yards, na.rm = TRUE), digits= 1),
     `YAC/C`= round(mean(yards_after_catch, na.rm = TRUE), digits=1),
     `Yds/C`= round(mean(yards_gained, na.rm=TRUE), digits=1)) %>%
-  reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, columns = list(
-    Player= colDef(cell= function(value){
-      image <- img(src = sprintf("images/%s.jpg", value), height = "24px", alt = value)
-    tagList(
-      div(style = list(display = "inline-block", width = "45px"), image),
-      value)})))
+  reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, theme= reactableTheme(stripedColor= "#eff7fa"))
 ```
 
 The table shows two types of air yards: completed air yards and intended air yards, which includes completed air yards and the potential air yards from incomplete passes. It also shows the Rams YAC per completion and total yards per completion. Goff's winless 7-game rookie season is once again an outlier. In 2020, his completions have been about a yard shorter through the air compared to his average over the previous three seasons, but they're gaining about an extra yard after the catch. The biggest change is in his intended air yards, though, which have declined 25% compared to average. 
