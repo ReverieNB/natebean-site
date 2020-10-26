@@ -48,7 +48,7 @@ local_business_type = ""
 org_name = ""
 
 # Description for social sharing and search engines. If undefined, superuser role is used in place.
-description = "Nate Bean's Personal Website"
+description = "An R and Data Science Site by Nate Bean"
 
 ############################
 ## Site Features
@@ -120,7 +120,7 @@ contact_links = [
 ############################
 
 # Default image for social sharing and search engines. Place image in `static/media/` folder and specify image name here.
-sharing_image = "sharing_image.jpeg"
+sharing_image = "sharing_image.jpg"
 
 # Twitter username (without @). Used when a visitor shares your site on Twitter.
 twitter = "fakenatebean"
