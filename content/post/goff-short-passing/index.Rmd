@@ -102,7 +102,7 @@ passing_pbp %>%
   select(Year= year, Player= passer_player_name, `Comp %`, `TD/Int`, CPOE, PR, `EPA/Play`= epa) %>%
   arrange(Year) %>%
   reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, compact=TRUE, theme= reactableTheme(
-    stripedColor= "#f7fbfd"),
+    stripedColor= "#f7fbfd", highlightColor= "#f7fbfd"),
     style= list(
       fontSize = "16px"
     ))
@@ -181,7 +181,7 @@ passing_pbp %>%
     `AY/C`= round(mean(air_yards, na.rm = TRUE), digits= 1),
     `YAC/C`= round(mean(yards_after_catch, na.rm = TRUE), digits=1),
     `Yds/C`= round(mean(yards_gained, na.rm=TRUE), digits=1)) %>%
-  reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, theme= reactableTheme(stripedColor= "#f7fbfd"),
+  reactable(outlined =TRUE, striped=TRUE, highlight=TRUE, theme= reactableTheme(stripedColor= "#f7fbfd", highlightColor= "#f7fbfd"),
     style= list(
       fontSize = "16px"
     ))
