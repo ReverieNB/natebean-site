@@ -15,7 +15,7 @@ library(knitr)
 knitr::opts_chunk$set(echo = TRUE, tidy = "styler" )
 ```
 
-I created this site explore some of my favorite topics with R. With the 2020 NFL season underway, my initial focus is on football analytics and my favorite team, the LA Rams. I'm new to sports analytics, so I'm looking forward to learning as I go and hopefully stumbling across some insights along the way.
+I created this site to explore some of my favorite topics with R. With the 2020 NFL season underway, my initial focus is on football analytics and my favorite team, the LA Rams. I'm new to sports analytics, so I'm looking forward to learning as I go and hopefully stumbling across some insights along the way.
 
 The Rams entered the 2020 season with a lot of question marks, but perhaps the most important was Jared Goff. Good quarterback play is essential to a successful passing attack, and a strong passing game is essential to modern NFL offenses. The average passing play through five weeks in 2020 has gained 6.6 yards, while the average run has gained just 4.5, according to [nflfastR](https://github.com/mrcaseb/nflfastR) data. That's an efficiency advantage of almost 50%! In particular, the Rams just jettisoned All-Pro running back Todd Gurley, further increasing the load on Goff's [\$134 million shoulders](https://www.turfshowtimes.com/2020/7/6/21315351/patrick-mahomes-jared-goff-contract-comparisons-rams-chiefs-salary). The Rams can't return to their heydays of 2018 without Goff playing well, so I decided analyzing his play is a good way to get into analytics.
 
