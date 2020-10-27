@@ -107,7 +107,7 @@ passing_pbp %>%
       fontSize = "16px"
     ))
 ```
-
+\
 Goff went 0-7 during his rookie campaign with a floundering Rams team, and his 2016 stats are his worst across-the-board. He picked up immediately after the arrival of Sean McVay, yet so far Goff has been best by nearly all of these measures in 2020. While it's still early, the Rams passing game has clearly improved since 2019. The table also shows how Goff ranks in CPOE, passer rating, and EPA/play among NFL quarterbacks with at least 128 passing attempts. He's never ranked highly in CPOE as modeled by NGS, but has fared much better in passer rating and EPA/play. Goff ranks 11th in the former and 5th in the latter in 2020. Goff isn't completing many more passes than expected given factors such as wide receiver separation, pressure, and throw length, but his high rankings in the other measures indicates he's performing better in other facets of the game.
 
 ```{r, warning=FALSE}
@@ -186,7 +186,7 @@ passing_pbp %>%
       fontSize = "16px"
     ))
 ```
-
+\
 The table shows two types of air yards: completed air yards and intended air yards, which includes completed air yards and the potential air yards from incomplete passes. It also shows the Rams YAC per completion and total yards per completion. Goff's winless 7-game rookie season is once again an outlier. In 2020, his completions have been about a yard shorter through the air compared to his average over the previous three seasons, but they're gaining about an extra yard after the catch. The biggest change is in his intended air yards, though, which have declined 25% compared to average. 
 
 Finally, I wanted to see if Goff has been throwing to different areas of the field. In addition to pass yardage data, nflfastR also has indicators for whether the pass was thrown to the right, left, or middle of the field. This isn't as strong as data that pinpoints the location of a catch on the field, but is still interesting. Mainly, I had a lot of fun messing around with ggplot2 to create a nice facsimile of a football field for my scatter plot. I used the code from the [Big Data Bowl](https://github.com/nfl-football-ops/Big-Data-Bowl) as a starting point and found an [image](https://www.google.com/imgres?imgurl=https://ramsnewlook.com/wp-content/uploads/2020/03/LA-ltyp.png&imgrefurl=https://ramsnewlook.com/&tbnid=SY-ryDGAlFhGnM&vet=1&docid=CmxMc3tBJ9cbiM&w=2000&h=438&source=sh/x/im) via Google  to serve create my endzone.  
