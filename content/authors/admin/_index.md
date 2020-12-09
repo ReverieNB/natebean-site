@@ -4,7 +4,7 @@ email: ""
 organizations:
 - name: University of Minnesota
   url: https://twin-cities.umn.edu/
-role: Research Associate
+role: Research Fellow
 social:
 - icon: twitter
   icon_pack: fab
@@ -19,7 +19,7 @@ superuser: true
 title: Nate Bean
 ---
 
-I'm a Research Associate at the Humphrey School of Public Affairs and created this site to use data analysis to use my R to explore some of my favorite topics. I plan to post about the LA Rams and football during the NFL season, but might also post analysis related to other interests like gaming and politics.
+I'm a Research Fellow at the University of Minnesota and created this site to use data analysis and R to explore some of my favorite topics. I plan to post about the LA Rams and football during the NFL season, but might also post analysis about other interests as well!
 
 This site was made with the [blogdown](https://github.com/rstudio/blogdown) package and the [Academic theme](https://themes.gohugo.io/academic/) for [Hugo](https://gohugo.io/).
 
