@@ -1,0 +1,583 @@
+---
+title: "34-0"
+author: "Nate Bean"
+date: 2020-12-09
+categories: ["R", "NFL", "Rams"]
+tags: ["NFL", "Rams", "Halftime"]
+summary: "How unusual is the Rams perfect record when leading at halftime?"
+authors: [Nate Bean]
+twitterImg: "/post/rams-halftime-leads/featured.png"
+output: html_document
+---
+
+
+
+<p>The Rams put an end to some worrying streaks in a 38-28 divisional win against the Cardinals on Sunday. They scored at least 30 points for the first time since Week 5, a drought that was partially due to Jared Goff’s struggles after a <a href="https://natebean.rbind.io/post/goff-short-passing/">hot start</a> to the season. After tallying 10 turnovers over the last 4 weeks, he put an end to these woes with a zero turnover performance against Arizona.</p>
+<p>But the Rams win also continued some trends that have long been present in LA. After taking a 14-7 lead into halftime, the Rams victory brought them to a eye-popping 34-0 when leading at halftime since Sean McVay took over in 2017. It’s becoming increasingly common to hear this stat from announcers or to see it at the bottom of the ticker, and for good reason. It’s hard to believe this perfect streak has lasted 3+ years. However, I wanted to get a bit more context for it. How extraordinary is this record compared to the rest of league? I’ll attempt to shed a little light on that question in this short post, once again using data from nflfastR.</p>
+<pre class="r"><code>library(tidyverse)
+library(nflfastR)
+
+mcvay &lt;- (2017:2020)
+
+half_data &lt;- map_df(mcvay, function(x) {
+  readRDS(url(
+    paste0(&quot;https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_&quot;, x, &quot;.rds&quot;)
+  )) %&gt;%
+    mutate(year = x)
+}) %&gt;%
+  group_by(game_id, game_half) %&gt;%
+  mutate(obs = row_number()) %&gt;%
+  filter(obs == max(obs) - 1) %&gt;%
+  ungroup() %&gt;%
+  select(game_id, posteam, defteam, week, game_half, posteam_score_post, defteam_score_post) %&gt;%
+  mutate(
+    leader = case_when(
+      posteam_score_post &gt; defteam_score_post ~ posteam,
+      posteam_score_post &lt; defteam_score_post ~ defteam,
+      posteam_score_post == defteam_score_post ~ &quot;tie&quot;
+    ),
+    lead = abs(posteam_score_post - defteam_score_post)
+  ) %&gt;%
+  group_by(game_id) %&gt;%
+  mutate(
+    half_num = row_number(),
+    winner = leader[half_num == max(half_num)]
+  ) %&gt;%
+  ungroup() %&gt;%
+  filter(game_half == &quot;Half1&quot;) %&gt;%
+  mutate(half_win = ifelse(leader == winner, 1, 0)) %&gt;%
+  filter(is.na(half_win) == FALSE)
+# there are a few NAs here and I excluded them for now
+# I&#39;ll go back and update this data to include those games soon
+# I believe it occurs when kickoffs are the final play?
+
+# Rams record when losing or tied
+rams &lt;- half_data %&gt;%
+  filter(posteam == &quot;LA&quot; | defteam == &quot;LA&quot;)
+
+tied &lt;- rams %&gt;%
+  filter(game_half == &quot;Half1&quot;, leader == &quot;tie&quot;) %&gt;%
+  mutate(wins = ifelse(winner == &quot;LA&quot;, 1, 0))
+
+losing &lt;- rams %&gt;%
+  filter(game_half == &quot;Half1&quot;, leader != &quot;tie&quot;, leader != &quot;LA&quot;) %&gt;%
+  mutate(
+    wins = ifelse(winner == &quot;LA&quot;, 1, 0),
+    wins = sum(wins),
+    losses = n() - mean(wins)
+  )
+
+nfl_winning_perc &lt;- round(sum(half_data$half_win) / nrow(half_data), digits = 2) * 100</code></pre>
+<p>The Rams have won 43 regular season and playoff games since 2017. While they’re undefeated after leading at halftime, they’ve been 3-5 when tied and 6-16 while trailing. These stats confirm what all football watchers know- the team that leads at the half tends to win. Indeed, across the NFL over the same time period, the team that led at half won 74% of the time. By winning nearly 40% of games where they trailed at half, the Rams have actually outperformed the rest of the league.</p>
+<p>The Rams perfect record when leading at half is better than average as well, but how much better is their winrate than that of other top NFL teams? The table below shows the records of the 10 teams with the highest winning percentages after leading at half since the 2017 season. While the Rams are the only perfect team, the data shows that the best teams across the league don’t have a much worse winrate when leading at the half. Teams such as the Patriots and Saints aren’t far behind the Rams, with winrates in the mid-to-low 90s. Their average halftime lead in these games is also about equal with those teams. The Rams are noticeably better than the bottom 2/3 of the league though (not included in the table), where winrates quickly fall below 80%.</p>
+<pre class="r"><code>library(gt)
+library(teamcolors)
+
+team_logos &lt;- teams_colors_logos %&gt;% select(team_abbr, team_logo_espn)
+
+half_data %&gt;%
+  filter(leader != &quot;tie&quot;) %&gt;%
+  group_by(leader) %&gt;%
+  summarise(
+    first_half_leads = n(),
+    wins_when_leading = sum(half_win),
+    lead = round(mean(lead), digits = 1)
+  ) %&gt;%
+  mutate(win_perc = round(wins_when_leading / first_half_leads, digits = 2)) %&gt;%
+  arrange(desc(win_perc)) %&gt;%
+  slice(1:10) %&gt;% # format data for the table
+  inner_join(team_logos, by = c(&quot;leader&quot; = &quot;team_abbr&quot;)) %&gt;%
+  select(team_logo_espn, leader, first_half_leads, wins_when_leading, lead, win_perc) %&gt;%
+  gt() %&gt;% # now table
+  text_transform(
+    location = cells_body(vars(team_logo_espn)),
+    fn = function(x) {
+      web_image(x)
+    }
+  ) %&gt;%
+  tab_header(
+    title = md(&quot;**NFL Winrates**&quot;),
+    subtitle = &quot;When Leading at Halftime since 2017&quot;
+  ) %&gt;%
+  fmt_percent(
+    columns = vars(win_perc),
+    decimals = 0
+  ) %&gt;%
+  cols_label(
+    team_logo_espn = &quot;Team&quot;,
+    leader = &quot;&quot;,
+    first_half_leads = &quot;Leads&quot;,
+    wins_when_leading = &quot;Wins&quot;,
+    lead = &quot;Avg. Lead&quot;,
+    win_perc = &quot;Winrate&quot;
+  ) %&gt;%
+  tab_style(
+    style = list(
+      cell_text(weight = &quot;bold&quot;)
+    ),
+    locations = cells_column_labels(
+      columns = vars(
+        team_logo_espn, leader, first_half_leads,
+        wins_when_leading, lead, win_perc
+      )
+    )
+  ) %&gt;%
+  tab_options(
+    heading.title.font.size = 23,
+    heading.subtitle.font.size = 17,
+    column_labels.border.top.width = px(3),
+    column_labels.border.top.color = &quot;transparent&quot;,
+    column_labels.border.bottom.color = &quot;black&quot;,
+    column_labels.border.bottom.width = px(3),
+    table.border.top.color = &quot;transparent&quot;,
+    table.border.bottom.color = &quot;transparent&quot;,
+    heading.align = &quot;left&quot;,
+    table.border.top.width = px(3)
+  ) %&gt;%
+  tab_source_note(source_note = md(&quot;**Data**: nflfastR&quot;))</code></pre>
+<p><style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#pszpxjuyln .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 3px;
+  border-top-color: transparent;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: transparent;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#pszpxjuyln .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pszpxjuyln .gt_title {
+  color: #333333;
+  font-size: 23px;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#pszpxjuyln .gt_subtitle {
+  color: #333333;
+  font-size: 17px;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#pszpxjuyln .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pszpxjuyln .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 3px;
+  border-top-color: transparent;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: black;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pszpxjuyln .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#pszpxjuyln .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#pszpxjuyln .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#pszpxjuyln .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#pszpxjuyln .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: black;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#pszpxjuyln .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#pszpxjuyln .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#pszpxjuyln .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#pszpxjuyln .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#pszpxjuyln .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#pszpxjuyln .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#pszpxjuyln .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pszpxjuyln .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#pszpxjuyln .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pszpxjuyln .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#pszpxjuyln .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#pszpxjuyln .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pszpxjuyln .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pszpxjuyln .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#pszpxjuyln .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pszpxjuyln .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#pszpxjuyln .gt_left {
+  text-align: left;
+}
+
+#pszpxjuyln .gt_center {
+  text-align: center;
+}
+
+#pszpxjuyln .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#pszpxjuyln .gt_font_normal {
+  font-weight: normal;
+}
+
+#pszpxjuyln .gt_font_bold {
+  font-weight: bold;
+}
+
+#pszpxjuyln .gt_font_italic {
+  font-style: italic;
+}
+
+#pszpxjuyln .gt_super {
+  font-size: 65%;
+}
+
+#pszpxjuyln .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="pszpxjuyln" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="6" class="gt_heading gt_title gt_font_normal" style><strong>NFL Winrates</strong></th>
+    </tr>
+    <tr>
+      <th colspan="6" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>When Leading at Halftime since 2017</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;">Team</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;">Leads</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="font-weight: bold;">Wins</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="font-weight: bold;">Avg. Lead</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="font-weight: bold;">Winrate</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/lar.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">LA</td>
+      <td class="gt_row gt_center">34</td>
+      <td class="gt_row gt_right">34</td>
+      <td class="gt_row gt_right">11.1</td>
+      <td class="gt_row gt_right">100&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/ne.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">NE</td>
+      <td class="gt_row gt_center">35</td>
+      <td class="gt_row gt_right">33</td>
+      <td class="gt_row gt_right">11.5</td>
+      <td class="gt_row gt_right">94&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/bal.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">BAL</td>
+      <td class="gt_row gt_center">38</td>
+      <td class="gt_row gt_right">35</td>
+      <td class="gt_row gt_right">11.2</td>
+      <td class="gt_row gt_right">92&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/no.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">NO</td>
+      <td class="gt_row gt_center">39</td>
+      <td class="gt_row gt_right">36</td>
+      <td class="gt_row gt_right">10.4</td>
+      <td class="gt_row gt_right">92&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/buf.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">BUF</td>
+      <td class="gt_row gt_center">20</td>
+      <td class="gt_row gt_right">18</td>
+      <td class="gt_row gt_right">10.9</td>
+      <td class="gt_row gt_right">90&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/kc.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">KC</td>
+      <td class="gt_row gt_center">42</td>
+      <td class="gt_row gt_right">38</td>
+      <td class="gt_row gt_right">10.8</td>
+      <td class="gt_row gt_right">90&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/sea.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">SEA</td>
+      <td class="gt_row gt_center">25</td>
+      <td class="gt_row gt_right">22</td>
+      <td class="gt_row gt_right">8.7</td>
+      <td class="gt_row gt_right">88&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/ten.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">TEN</td>
+      <td class="gt_row gt_center">25</td>
+      <td class="gt_row gt_right">22</td>
+      <td class="gt_row gt_right">8.2</td>
+      <td class="gt_row gt_right">88&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500-dark/car.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">CAR</td>
+      <td class="gt_row gt_center">29</td>
+      <td class="gt_row gt_right">25</td>
+      <td class="gt_row gt_right">8.2</td>
+      <td class="gt_row gt_right">86&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/mia.png" style="height:30px;"></td>
+      <td class="gt_row gt_left">MIA</td>
+      <td class="gt_row gt_center">21</td>
+      <td class="gt_row gt_right">18</td>
+      <td class="gt_row gt_right">10.6</td>
+      <td class="gt_row gt_right">86&percnt;</td>
+    </tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="6"><strong>Data</strong>: nflfastR</td>
+    </tr>
+  </tfoot>
+  
+</table></div><br />
+While the Rams’ perfect 34-0 record is certainly eye-catching, it doesn’t appear to be a true outlier compared to other top teams since 2017. Rather than being a unique attribute of Mcvay’s team, it appears the streak is more likely the product of being a good NFL team over several seasons blessed with a little luck. The fact that the Rams defense had only allowed two touchdowns in the second half prior to the Cardinals game this season hasn’t hurt either.</p>
+<p>Still, the Rams perfect 34-0 record remains a strong indicator that the Rams have been one of the NFL’s best teams since Since McVay became coach. It’s a fun statistic even if the difference between the Rams and other top teams wouldn’t pass a statistical significance test. But who knows? If the Rams keep consistently winning these games, there may just be something there after all. Here’s to hoping.</p>
