@@ -69,7 +69,7 @@ losing &lt;- rams %&gt;%
 
 nfl_winning_perc &lt;- round(sum(half_data$half_win) / nrow(half_data), digits = 2) * 100</code></pre>
 <p>The Rams have won 43 regular season and playoff games since 2017. While they’re undefeated after leading at halftime, they’ve been 3-5 when tied and 6-16 while trailing. These stats confirm what all football watchers know- the team that leads at the half tends to win. Indeed, across the NFL over the same time period, the team that led at half won 74% of the time. By winning nearly 40% of games where they trailed at half, the Rams have actually outperformed the rest of the league.</p>
-<p>The Rams perfect record when leading at half is better than average as well, but how much better is their winrate than that of other top NFL teams? The table below shows the records of the 10 teams with the highest winning percentages after leading at half since the 2017 season. While the Rams are the only perfect team, the data shows that the best teams across the league don’t have a much worse winrate when leading at the half. Teams such as the Patriots and Saints aren’t far behind the Rams, with winrates in the mid-to-low 90s. Their average halftime lead in these games is also about equal with those teams. The Rams are noticeably better than the bottom 2/3 of the league though (not included in the table), where winrates quickly fall below 80%.</p>
+<p>The Rams perfect record when leading at half is better than average as well, but how much better is their winrate than that of other top NFL teams? The table below shows the records of the 10 teams with the highest winning percentages after leading at half since the 2017 season. While the Rams are the only perfect team, the data shows that the best teams across the league don’t have a much worse winrate when leading at the half.</p>
 <pre class="r"><code>library(gt)
 library(teamcolors)
 
@@ -139,7 +139,7 @@ half_data %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#pszpxjuyln .gt_table {
+#ovqzlgiego .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -164,7 +164,7 @@ half_data %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#pszpxjuyln .gt_heading {
+#ovqzlgiego .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -176,7 +176,7 @@ half_data %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#pszpxjuyln .gt_title {
+#ovqzlgiego .gt_title {
   color: #333333;
   font-size: 23px;
   font-weight: initial;
@@ -186,7 +186,7 @@ half_data %&gt;%
   border-bottom-width: 0;
 }
 
-#pszpxjuyln .gt_subtitle {
+#ovqzlgiego .gt_subtitle {
   color: #333333;
   font-size: 17px;
   font-weight: initial;
@@ -196,13 +196,13 @@ half_data %&gt;%
   border-top-width: 0;
 }
 
-#pszpxjuyln .gt_bottom_border {
+#ovqzlgiego .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#pszpxjuyln .gt_col_headings {
+#ovqzlgiego .gt_col_headings {
   border-top-style: solid;
   border-top-width: 3px;
   border-top-color: transparent;
@@ -217,7 +217,7 @@ half_data %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#pszpxjuyln .gt_col_heading {
+#ovqzlgiego .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -237,7 +237,7 @@ half_data %&gt;%
   overflow-x: hidden;
 }
 
-#pszpxjuyln .gt_column_spanner_outer {
+#ovqzlgiego .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -249,15 +249,15 @@ half_data %&gt;%
   padding-right: 4px;
 }
 
-#pszpxjuyln .gt_column_spanner_outer:first-child {
+#ovqzlgiego .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#pszpxjuyln .gt_column_spanner_outer:last-child {
+#ovqzlgiego .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#pszpxjuyln .gt_column_spanner {
+#ovqzlgiego .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 3px;
   border-bottom-color: black;
@@ -269,7 +269,7 @@ half_data %&gt;%
   width: 100%;
 }
 
-#pszpxjuyln .gt_group_heading {
+#ovqzlgiego .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -291,7 +291,7 @@ half_data %&gt;%
   vertical-align: middle;
 }
 
-#pszpxjuyln .gt_empty_group_heading {
+#ovqzlgiego .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -306,15 +306,15 @@ half_data %&gt;%
   vertical-align: middle;
 }
 
-#pszpxjuyln .gt_from_md > :first-child {
+#ovqzlgiego .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#pszpxjuyln .gt_from_md > :last-child {
+#ovqzlgiego .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#pszpxjuyln .gt_row {
+#ovqzlgiego .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -333,7 +333,7 @@ half_data %&gt;%
   overflow-x: hidden;
 }
 
-#pszpxjuyln .gt_stub {
+#ovqzlgiego .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -345,7 +345,7 @@ half_data %&gt;%
   padding-left: 12px;
 }
 
-#pszpxjuyln .gt_summary_row {
+#ovqzlgiego .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -355,7 +355,7 @@ half_data %&gt;%
   padding-right: 5px;
 }
 
-#pszpxjuyln .gt_first_summary_row {
+#ovqzlgiego .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -365,7 +365,7 @@ half_data %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#pszpxjuyln .gt_grand_summary_row {
+#ovqzlgiego .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -375,7 +375,7 @@ half_data %&gt;%
   padding-right: 5px;
 }
 
-#pszpxjuyln .gt_first_grand_summary_row {
+#ovqzlgiego .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -385,11 +385,11 @@ half_data %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#pszpxjuyln .gt_striped {
+#ovqzlgiego .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#pszpxjuyln .gt_table_body {
+#ovqzlgiego .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -398,7 +398,7 @@ half_data %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#pszpxjuyln .gt_footnotes {
+#ovqzlgiego .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -412,13 +412,13 @@ half_data %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#pszpxjuyln .gt_footnote {
+#ovqzlgiego .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#pszpxjuyln .gt_sourcenotes {
+#ovqzlgiego .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -432,46 +432,46 @@ half_data %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#pszpxjuyln .gt_sourcenote {
+#ovqzlgiego .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#pszpxjuyln .gt_left {
+#ovqzlgiego .gt_left {
   text-align: left;
 }
 
-#pszpxjuyln .gt_center {
+#ovqzlgiego .gt_center {
   text-align: center;
 }
 
-#pszpxjuyln .gt_right {
+#ovqzlgiego .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#pszpxjuyln .gt_font_normal {
+#ovqzlgiego .gt_font_normal {
   font-weight: normal;
 }
 
-#pszpxjuyln .gt_font_bold {
+#ovqzlgiego .gt_font_bold {
   font-weight: bold;
 }
 
-#pszpxjuyln .gt_font_italic {
+#ovqzlgiego .gt_font_italic {
   font-style: italic;
 }
 
-#pszpxjuyln .gt_super {
+#ovqzlgiego .gt_super {
   font-size: 65%;
 }
 
-#pszpxjuyln .gt_footnote_marks {
+#ovqzlgiego .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="pszpxjuyln" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="ovqzlgiego" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="6" class="gt_heading gt_title gt_font_normal" style><strong>NFL Winrates</strong></th>
@@ -579,5 +579,5 @@ half_data %&gt;%
   </tfoot>
   
 </table></div><br />
-While the Rams’ perfect 34-0 record is certainly eye-catching, it doesn’t appear to be a true outlier compared to other top teams since 2017. Rather than being a unique attribute of Mcvay’s team, it appears the streak is more likely the product of being a good NFL team over several seasons blessed with a little luck. The fact that the Rams defense had only allowed two touchdowns in the second half prior to the Cardinals game this season hasn’t hurt either.</p>
-<p>Still, the Rams perfect 34-0 record remains a strong indicator that the Rams have been one of the NFL’s best teams since Since McVay became coach. It’s a fun statistic even if the difference between the Rams and other top teams wouldn’t pass a statistical significance test. But who knows? If the Rams keep consistently winning these games, there may just be something there after all. Here’s to hoping.</p>
+Teams such as the Patriots and Saints aren’t far behind the Rams, with winrates in the mid-to-low 90s. LA’s average halftime lead in these games is also about equal with those teams. The Rams are noticeably better than the bottom 2/3 of the league though (not included in the table), where winrates quickly fall below 80%. While the Rams’ perfect 34-0 record is certainly eye-catching, it doesn’t appear to be a true outlier leaguewide since 2017. Rather than being a unique attribute of McVay’s team, the streak is more likely the product of being a consistently good NFL team blessed with a little luck. The fact that the Rams defense had only allowed two second-half touchdowns this season prior to the Cardinals game has certainly helped.</p>
+<p>Still, the Rams’ perfect 34-0 record remains a good indicator that the Rams have been one of the NFL’s best teams since McVay became coach. It’s a fun statistic even if the difference between the Rams and other top teams wouldn’t pass a statistical significance test. And who knows? If the Rams keep consistently winning these games, there may just be something there after all. Here’s to hoping.</p>
